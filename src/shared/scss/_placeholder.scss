@@ -1,0 +1,27 @@
+$bg-color: #F9F9F9;
+$bg-color-loading: darken($bg-color, 3);
+
+.placeholder {
+    .movie-header {
+        background-color: $bg-color-loading;
+    }
+
+    .movie-summary {
+        padding-left: 0.7rem;
+    }
+
+    .poster {
+        .content {
+            background-color: darken($bg-color, 8);
+        }
+    }
+
+    .item-content {
+        padding-top: 1rem;
+
+        span {
+            background-color: $bg-color-loading;
+            width: 70%;
+        }
+    }
+}

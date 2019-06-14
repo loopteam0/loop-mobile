@@ -1,0 +1,119 @@
+<ion-header autoHide='true'>
+  <ion-toolbar>
+    <ion-title *ngIf="!enableSearch">Movies</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button class="search" *ngIf="!enableSearch" (click)="togleSearch()">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+
+      <ion-button class="search" *ngIf="enableSearch" (click)="togleSearch()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-searchbar #input animated (ionBlur)='togleSearch()' debounce='1000' class="search" *ngIf="enableSearch"
+      (ionClear)='ionClear()' (ionChange)='ionChange(input.value)' placeholder="Search Movies">
+    </ion-searchbar>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content (ionScroll)='ionScroll($event)' (ionScrollEnd)="ionScrollEnd($event)" [scrollEvents]="true" padding
+  class="page-content">
+
+  <ion-refresher slot="fixed" (ionRefresh)="movies=[];page=1;showMovies($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="movies.length > 0">
+    <div class="spinner" *ngIf="loading"></div>
+  </div>
+
+  <div>
+    <div class='animated fadeIn' *ngIf="movies.length > 0">
+      <div>
+        <div class="movies current">
+          <div class='animated fadeIn' *ngFor="let movie of movies | truthify |unique" class="movie-detail" tappable>
+            <div class="poster">
+              <div class="content">
+                <img class='animated fadeIn' (click)="onNavigate(movie.id,movie.imdb_code)"
+                  src="{{movie.large_cover_image}}">
+              </div>
+            </div>
+            <div class="item-content">
+              <span (click)="onNavigate(movie.id,movie.imdb_code)" class="title">{{movie.title}}</span>
+              <span class="genre">{{movie.genres | join:" | "}}</span>
+
+              <span class="line">
+                <span class="date">{{movie.year}} | </span>
+                <span class="time">{{movie.runtime | duration}}</span>
+              </span>
+              <span class="country">{{movie.language}}</span>
+              <!-- services rating -->
+              <div class="ratings">
+                <div class="imdb">
+                  <span>imdb <span class="nb">{{movie.rating}}</span></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <!--If the page is loading show placeholders-->
+  <div class="spinner" *ngIf="loading"></div>
+
+
+  <ion-card class="animated bounceIn" class="error-card" *ngIf="error">
+    <ion-card-content>
+      <h1>🤯</h1>
+      <h3 class='eina'>Uh Oh</h3>
+      <h5>Sorry, something went wrong.</h5>
+      <div class="auto">
+        <ion-button color="danger" class="retry-button" (click)="showMovies()">
+          RETRY
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab *ngIf="fab" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="animated fadeIn" (click)='scrollTo()'>
+      <ion-icon name="arrow-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- placeholder -->
+  <div class='animated fadeIn' *ngIf="loading || placeholder ||loading_i">
+    <div class="movies current">
+      <div *ngFor="let i of [1,2,3,4]" class="movie-detail loading">
+        <div class="poster">
+          <div class="content">
+          </div>
+        </div>
+        <div class="item-content">
+          <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+          <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+          <ion-skeleton-text animated width="30%"></ion-skeleton-text>
+          <ion-skeleton-text animated width="30%"></ion-skeleton-text>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <ion-infinite-scroll threshold='50%' (ionInfinite)="showMovies($event)">
+    <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more Movies...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

@@ -1,0 +1,54 @@
+$bg-color: #F9F9F9;
+$bg-color-loading: darken($bg-color, 3);
+
+ion-button {
+    float: right;
+}
+
+.episode-card {
+    width: 100%;
+    margin: auto;
+
+    ion-card-content {
+        padding: 5px 0px;
+
+        p {
+            font-size: 17px;
+            margin: 5px 0;
+        }
+
+        ion-label {
+            opacity: 0.7;
+            margin: 3px 0;
+        }
+    }
+
+
+}
+
+ion-content {
+    div.inner-scroll {
+        --padding-start: 2px !important;
+        --padding-end: 2px !important;
+        --padding-top: 2px !important;
+    }
+}
+
+.seperator {
+    display: flex;
+    flex-basis: 1 1 auto;
+}
+
+.placeholder {
+    ion-card {
+        background-color: $bg-color-loading;
+        height: 75px;
+    }
+}
+
+.error-card {
+
+    ion-button {
+        float: none;
+    }
+}

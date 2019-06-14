@@ -1,0 +1,118 @@
+<ion-header class="header">
+  <ion-toolbar>
+    <ion-title *ngIf="details">
+      {{details.title}}
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref='tabs/shows-list'></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button [disabled]="isFavorite | async" (click)="store(details)">
+        <ion-icon color="danger" slot="icon-only" name="heart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="content" fullscreen="true">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <div class="spinner" *ngIf="loading"></div>
+
+  <ion-card class="error-card animated bounceIn" *ngIf="error">
+    <ion-card-content>
+      <div class="auto">
+        <ion-icon class="slideInDown animated infinite" slot="start" name="arrow-down"></ion-icon>
+      </div>
+      <h1 class='animated'>🤯</h1>
+      <h3>Uh Oh</h3>
+      <h5>Sorry, something went wrong.</h5>
+      <div class="auto">
+        <span>Slide down to Retry </span>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- placeholder -->
+  <div class='placeholder' *ngIf="loading || !details">
+    <div #gbImage id="gbImage" class="movie-header">
+    </div>
+
+    <div class="movie-summary">
+      <div class="poster">
+        <div class="content">
+        </div>
+      </div>
+
+      <div class="item-content">
+        <span class="title">&nbsp;</span>
+        <span class="genre ">&nbsp;</span>
+        <span class="country">&nbsp;</span>
+        <span class="country">&nbsp;</span>
+        <span class="line">
+          <span class="time">&nbsp;</span>
+          <span class="date">&nbsp;</span>
+        </span>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- real output -->
+  <div *ngIf="details">
+    <div #gbImage id="gbImage" class="movie-header">
+      <img class='animated fadeIn' [src]="setBackground(details.images.fanart)">
+    </div>
+
+    <div class="movie-content animated bounceIn" padding>
+      <div class="movie-summary">
+        <div class="poster">
+          <div class="content">
+            <img src="{{details.images.banner}}">
+          </div>
+        </div>
+
+        <div class="item-content">
+          <span class="title">{{details.title}}</span>
+          <span class="genre ">{{details.genres | join:" | "}}</span>
+          <span class="country">{{details.download_count}}</span>
+          <span class="country">{{details.air_day}} {{details.air_time}} | {{details.runtime}}min</span>
+          <span class="line">
+            <span class="time"></span>
+            <span class="date">Last updated on {{details.last_updated | date:'mediumDate'}} </span>
+          </span>
+
+          <div class="ratings">
+            <div class="imdb">
+              <span>imdb <span class="nb">{{details.rating.percentage/10}}</span></span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="movie-more">
+
+        <span class="description"><span class="key">Storyline: </span> {{details.synopsis}}</span>
+
+        <!-- <span><span class="key">Cast: </span></span> -->
+
+      </div>
+    </div>
+  </div>
+
+  <ion-fab *ngIf="details" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="animated fadeIn" (click)="showDownloadModal(details)">
+      <ion-icon name="download"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="!enableSearch">Favorites</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button color="danger" class="search" (click)="clearAllFavs()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="getFavs($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-text color="tertiary" class="ion-text-center">
+    <p>Pull to refresh list</p>
+  </ion-text>
+  <div class='animated fadeIn'>
+    <div>
+      <div class="movies current">
+        <div *ngFor="let show of favs | async |truthify " class="movie-detail" tappable>
+          <div class="poster">
+            <div id="img-content" class="content">
+              <img *ngIf="show.value.mal_id" (click)="onNavigate(show.value)"
+                src="../../../../assets/default_poster.png">
+              <img *ngIf="show.value.imdb_id" (click)="onNavigate(show.value)" src="{{show.value.images.banner}}">
+            </div>
+          </div>
+          <div class="item-content">
+            <span (click)="onNavigate(show.value)" class="title">{{show.value.title}}</span>
+            <span class="country year">{{show.value.year}}</span>
+
+            <!-- services rating -->
+            <div class="ratings">
+              <div class="imdb">
+                <span>imdb <span class="nb">{{show.value.rating.percentage/10}}</span></span>
+              </div>
+            </div>
+
+            <ion-buttons slot="end">
+              <ion-button color="danger" (click)="removefav(show)">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

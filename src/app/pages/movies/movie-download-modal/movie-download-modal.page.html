@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{data.title}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeSlf()">
+        <ion-icon slot="end" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+{{data|json}}
+</ion-content>

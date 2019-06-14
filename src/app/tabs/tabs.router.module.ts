@@ -8,50 +8,90 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'movies-list',
         children: [
           {
             path: '',
-            loadChildren: '../tab1/tab1.module#Tab1PageModule'
+            loadChildren:
+              '../pages/movies/movies-list/movies-list.module#MoviesListPageModule'
           }
         ]
       },
       {
-        path: 'tab2',
+        path: 'movies-list/:imdb_id/:id',
         children: [
           {
             path: '',
-            loadChildren: '../tab2/tab2.module#Tab2PageModule'
+            loadChildren:
+              '../pages/movies/movies-details/movies-details.module#MoviesDetailsPageModule'
           }
         ]
       },
       {
-        path: 'tab3',
+        path: 'shows-list',
         children: [
           {
             path: '',
-            loadChildren: '../tab3/tab3.module#Tab3PageModule'
+            loadChildren:
+              '../pages/shows/shows-list/shows-list.module#ShowsListPageModule'
+          }
+        ]
+      },
+      {
+        path: 'shows-list/:imdb_id',
+        children: [
+          {
+            path: '',
+            loadChildren:
+              '../pages/shows/shows-details/shows-details.module#ShowsDetailsPageModule'
+          }
+        ]
+      },
+      {
+        path: 'favorites',
+        children: [
+          {
+            path: '',
+            loadChildren:
+              '../pages/musics/musics/musics.module#MusicsPageModule'
+          }
+        ]
+      },
+      {
+        path: 'anime',
+        children: [
+          {
+            path: '',
+            loadChildren: '../pages/anime/anime/anime.module#AnimePageModule'
+          }
+        ]
+      },
+      {
+        path: 'anime/:id',
+        children: [
+          {
+            path: '',
+            loadChildren:
+              '../pages/anime/anime-details/anime-details.module#AnimeDetailsPageModule'
           }
         ]
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: 'movies-list',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: 'tabs',
     pathMatch: 'full'
   }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class TabsPageRoutingModule {}

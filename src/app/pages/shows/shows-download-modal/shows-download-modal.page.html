@@ -1,0 +1,141 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-title>Episodes</ion-title> -->
+
+    <ion-item>
+      <ion-label>Source</ion-label>
+      <ion-select #downloadOpt value='Default' interface="action-sheet" placeholder="Select Pizza">
+        <ion-select-option *ngFor="let item of downloadOpts" [value]="item.name">{{item.name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="closeSlf()">
+        <ion-icon slot="end" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="downloadOpt.value === 'Default'">
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of data.episodes | orderBy:['-season','-episode']">
+      <ion-card class="animated fadeIn">
+        <ion-item>
+
+          <ion-card (click)="showEpisodeDetails('default', item)" class="episode-card">
+            <ion-card-content>
+              <p>{{item.title}}</p>
+              <ion-label>Season {{item.season}} Episode {{item.episode}} </ion-label>
+            </ion-card-content>
+          </ion-card>
+
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option *ngIf="item.torrents['0']" (click)="item.torrents['0'].url" color="primary" expandable>
+            240p
+          </ion-item-option>
+          <ion-item-option *ngIf="item.torrents['480p']" (click)="item.torrents['480p'].url" color="primary" expandable>
+            480p
+          </ion-item-option>
+          <ion-item-option *ngIf="item.torrents['720p']" (click)="item.torrents['720p'].url" color="primary" expandable>
+            720p
+          </ion-item-option>
+          <ion-item-option *ngIf="item.torrents['1080p']" (click)="item.torrents['1080p'].url" color="primary"
+            expandable>
+            1080p
+          </ion-item-option>
+        </ion-item-options>
+
+      </ion-card>
+    </ion-item-sliding>
+  </ion-list>
+
+
+</ion-content>
+
+<ion-content *ngIf="downloadOpt.value === 'Eztv'">
+  <!-- <ion-content> -->
+  <ion-refresher slot="fixed" (ionRefresh)="Episodes=[];page=1;getShowEpisodes($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card class="error-card animated bounceIn" *ngIf="error">
+    <ion-card-content>
+      <div class="auto">
+        <ion-icon class="slideInDown animated infinite" slot="start" name="arrow-down"></ion-icon>
+      </div>
+      <h1>😕</h1>
+      <h3>Uh Oh</h3>
+      <h5>Sorry, something went wrong.</h5>
+      <div class="auto">
+        <span>Slide down to Refresh </span>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-list>
+
+    <ion-item-sliding *ngFor="let item of Episodes | truthify |unique">
+      <ion-card class="animated bounceIn" color="warning">
+        <ion-item>
+
+          <ion-card (click)="showEpisodeDetails('eztv',item)" class="episode-card">
+            <ion-card-content>
+              <p>{{item.title}}</p>
+              <ion-label>Season {{item.season}} Episode {{item.episode}} </ion-label>
+            </ion-card-content>
+          </ion-card>
+
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="primary" expandable>
+
+            <ion-icon slot="icon-only" name="download"></ion-icon>
+
+          </ion-item-option>
+        </ion-item-options>
+
+      </ion-card>
+    </ion-item-sliding>
+  </ion-list>
+
+
+  <div class="spinner" *ngIf="loading">
+  </div>
+
+  <ion-card class="error-card animated bounceIn" *ngIf="error && Episodes.length != 0">
+    <ion-card-content>
+      <h1>😫</h1>
+      <h3>Uh Oh</h3>
+      <h5>Sorry, something went wrong.</h5>
+      <div class="auto">
+        <ion-button (click)="getShowEpisodes()">
+          RETRY
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- placeholder -->
+  <ion-list *ngIf="loading" class="placeholder">
+
+    <ion-item-sliding class="animated fadeIn" *ngFor="let item of [1,2,3,4]">
+      <ion-card color="warning">
+
+      </ion-card>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-infinite-scroll threshold='50%' (ionInfinite)="getShowEpisodes($event)">
+    <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading More Episodes...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

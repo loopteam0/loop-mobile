@@ -1,0 +1,268 @@
+@mixin aspect-ratio($width, $height) {
+    position: relative;
+
+    &:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: ($height / $width) * 100%;
+    }
+
+    >.content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+$color-title: black;
+$color-subtitle: lighten($color-title, 40);
+$color-subsubtitle: lighten($color-subtitle, 20);
+$bg-color: #F9F9F9;
+$bg-color-loading: darken($bg-color, 3);
+
+ion-content {
+    font-size: 16px;
+    padding-top: 0.5em;
+}
+
+ion-header.header {
+    ion-navbar.toolbar {
+        .toolbar-background {
+            background: none;
+            background-color: transparent;
+        }
+    }
+}
+
+ion-content.content {
+    .scroll-content {
+        padding-top: 0 !important;
+    }
+}
+
+
+.movie-header {
+    height: 13em;
+    overflow: hidden;
+    position: relative;
+    background-color: #000;
+
+    img {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0.7;
+        background-size: cover;
+        background-position: 0 20%;
+    }
+}
+
+.movie-content {
+    flex: 1;
+}
+
+.movie-summary {
+    overflow: visible;
+    margin-bottom: 1em;
+    padding: 0;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+
+    .poster {
+        margin-top: -3em;
+        margin-right: 0.7em;
+
+        @include aspect-ratio(1.1, 1.5);
+
+        flex: 2;
+        min-width: auto;
+        min-height: auto;
+        padding: 0;
+
+        img {
+            width: auto;
+            height: auto;
+            box-shadow: 0 -2px 10px rgba(15, 15, 15, 0.671);
+            border-radius: 3px;
+        }
+    }
+
+    .item-content {
+        overflow: hidden;
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .title {
+        margin-bottom: .5em;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: $color-title;
+    }
+
+    .country {
+        margin-bottom: .3em;
+        font-size: .8em;
+
+        color: $color-subtitle;
+    }
+
+    .genre {
+        margin-bottom: .3em;
+        text-transform: capitalize;
+        font-size: .8em;
+
+        color: $color-subsubtitle;
+    }
+
+    .line {
+        margin-bottom: .3em;
+        display: flex;
+        flex-direction: row;
+
+        >* {
+            // margin: 0 .4em 0 0;
+        }
+    }
+
+    .genre,
+    .country,
+    .line {
+        margin-left: 3px;
+    }
+
+    .ratings {
+        margin-bottom: .3em;
+        margin-left: 0;
+        display: flex;
+        flex-direction: row;
+        font-size: .8em;
+
+        .imdb {
+            margin-right: 4px;
+            padding: 4px 6px;
+            border-radius: 2px;
+            background-color: #FFB10A;
+            color: black;
+            font-weight: bold;
+
+            .nb {
+                color: white;
+            }
+        }
+    }
+
+
+
+    .date {
+        font-size: .8em;
+        color: $color-subtitle;
+    }
+
+    .time {
+        font-size: .8em;
+        //font-weight: bold;
+        color: $color-subtitle;
+    }
+}
+
+.movie-more {
+    margin-top: 20px;
+    font-size: .85em;
+
+    span {
+        margin-bottom: .4em;
+    }
+
+    color: $color-subtitle;
+
+    display: flex;
+    flex-direction: column;
+
+    .key {
+        font-weight: bold;
+    }
+
+    .description {
+        margin-top: .6em;
+        text-align: justify;
+    }
+
+}
+
+.movie-more-1 {
+    margin-top: 10px;
+    font-size: .85em;
+
+    span {
+        margin-bottom: .4em;
+    }
+
+    color: $color-subtitle;
+
+    .key {
+        font-weight: bold;
+    }
+
+    .description {
+        margin-top: .6em;
+        text-align: justify;
+    }
+
+    ion-slides {
+        font-size: .8em;
+
+        ion-slide {
+            background-color: #fffffffa;
+            border-radius: 10px;
+            margin-top: 0.4rem;
+            -webkit-box-shadow: 0 5px 8px #0000001a;
+            box-shadow: 0 5px 8px #0000001a;
+            margin: 10px auto;
+
+            .img {
+                margin: auto;
+                margin-top: 0.4rem;
+                padding: 0;
+                height: 60px;
+                width: 60px;
+                border-radius: 50%;
+                background-color: #dddcdc;
+                -webkit-box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+
+                img {
+                    border-radius: 50%;
+                }
+            }
+
+            p {
+                margin-top: 0.2rem;
+                margin-bottom: 0.2rem;
+
+                font-weight: normal;
+
+                &.small {
+                    margin: 0 auto;
+                    font-size: 0.7em;
+                    font-weight: lighter;
+                }
+
+                &.characterName {
+                    margin: 0 auto;
+                    font-size: 0.8rem;
+                    margin-bottom: 0.4rem;
+                }
+            }
+
+        }
+    }
+}

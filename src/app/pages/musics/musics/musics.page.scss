@@ -1,0 +1,22 @@
+@import '../../../../shared/scss/media.list';
+@import '../../../../shared/scss/placeholder';
+@import '../../../../shared/scss/animate';
+
+ion-text {
+    p {
+        margin: 0;
+        margin-bottom: 10px;
+        font-size: .7rem;
+    }
+}
+
+.item-content {
+
+    ion-buttons {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        width: 47px;
+        align-self: flex-end;
+    }
+
+}

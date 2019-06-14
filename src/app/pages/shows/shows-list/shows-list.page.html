@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="!enableSearch">TV Shows</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button class="search" *ngIf="!enableSearch" (click)="enableSearch = !enableSearch">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+
+      <ion-button class="search" *ngIf="enableSearch" (click)="enableSearch = !enableSearch">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-searchbar #input animated="true" debounce="2000" (ionBlur)="togleSearch()" class="search" *ngIf="enableSearch"
+      (ionClear)="ionClear()" (ionChange)="ionChange(input.value)" placeholder="Search TV Shows"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding (ionScroll)="ionScroll($event)" (ionScrollEnd)="ionScrollEnd($event)" [scrollEvents]="true"
+  class="page-content">
+  <ion-refresher slot="fixed" (ionRefresh)="Shows = []; page = 1; showShows($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="Shows.length > 0">
+    <div class="spinner" *ngIf="loading"></div>
+  </div>
+
+  <div>
+    <div *ngIf="Shows.length > 0">
+      <div>
+        <div class="movies current">
+          <div *ngFor="let show of Shows | truthify | unique" class="movie-detail animated fadeIn" tappable>
+            <div class="poster">
+              <div id="img-content" class="content">
+                <img class="animated fadeIn" (click)="onNavigate(show.imdb_id)" src="{{ show.images.poster }}">
+              </div>
+            </div>
+            <div class="item-content">
+              <span (click)="onNavigate(show.imdb_id)" class="title">
+                {{show.title}}</span>
+              <span class="country year">{{ show.year }}</span>
+
+              <!-- services rating -->
+              <div class="ratings">
+                <div class="imdb">
+                  <span>imdb
+                    <span class="nb">{{
+                      show.rating.percentage / 10
+                    }}</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- show error dialog if an error occure -->
+    <ion-card class="error-card animated bounceIn" *ngIf="error">
+      <ion-card-content>
+        <h1>😯</h1>
+        <h3>Uh Oh</h3>
+        <h5>Sorry, something went wrong.</h5>
+        <div class="auto">
+          <ion-button color="danger" class="retry-button" (click)="showShows()">
+            RETRY
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="spinner" *ngIf="loading"></div>
+
+    <!--If the page is loading show placeholders-->
+    <div class='animated fadeIn' *ngIf="loading || placeholer">
+      <div class="movies current">
+        <div *ngFor="let i of [1, 2, 3, 4]" class="movie-detail loading">
+          <div class="poster">
+            <div class="content"></div>
+          </div>
+          <div class="item-content">
+            <span class="title">&nbsp;</span>
+            <span class="country">&nbsp;</span>
+            <span class="genre ">&nbsp;</span>
+            <span class="genre ">&nbsp;</span>
+            <span class="line">
+              <span class="date">&nbsp;</span>
+              <span class="time">&nbsp;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-fab *ngIf="fab" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="animated fadeIn" (click)="scrollTo()">
+      <ion-icon name="arrow-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-infinite-scroll threshold='50%' (ionInfinite)="showShows($event)">
+    <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading More Shows...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
