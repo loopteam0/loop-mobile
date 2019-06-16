@@ -13,8 +13,8 @@ export class FavoriteService implements OnInit {
   constructor(private IonicStore: Storage, private UI: UiServiceService) {}
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+    // Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    // Add 'implements OnInit' to the class.
   }
 
   async store(value: object) {
@@ -35,9 +35,9 @@ export class FavoriteService implements OnInit {
     const Favs = [];
     await this.IonicStore.forEach((value, key, index) => {
       const toObject = {
-        key: key,
-        index: index,
-        value: value
+        key,
+        index,
+        value
       };
       Favs.push(toObject);
     });
@@ -48,7 +48,6 @@ export class FavoriteService implements OnInit {
     await this.IonicStore.keys().then(val => {
       val.forEach((value, index) => {
         if (value === key) {
-          console.log('true');
           return this.Favorite.next(true);
         }
       });
@@ -57,13 +56,12 @@ export class FavoriteService implements OnInit {
 
   removeFav(key) {
     this.IonicStore.remove(key).then(res => {
-      console.log(res);
-      this.UI.presentToast(res, 1500);
+      this.UI.presentToast('Item removed', 1500);
       this.get();
     });
   }
 
-  ///HOT
+  /// HOT
   clearFavs() {
     this.IonicStore.clear().then(res => {
       this.UI.presentToast('All Data Deleted', 1500);

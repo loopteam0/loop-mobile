@@ -49,6 +49,11 @@ export class AnimePage implements OnInit {
         this.loading = false;
         this.error = false;
         this.Anime = [...res, ...this.Anime];
+        if (res.length === 0) {
+          this.UI.presentToast('Nothing found ');
+        } else {
+          this.UI.presentToast(`${res.length} items found`);
+        }
       },
       err => {
         this.error = true;
@@ -68,11 +73,9 @@ export class AnimePage implements OnInit {
         this.Anime = [...this.Anime, ...res];
         this.loading = false;
         this.error = false;
-        e ? (this.placeholer = false) : null;
-        // e ? e.target.complete : null;
-        console.log(this.Anime.length);
         if (e) {
           e.target.complete();
+          this.placeholer = false;
         }
       },
       err => {

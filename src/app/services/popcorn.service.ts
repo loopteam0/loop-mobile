@@ -80,10 +80,22 @@ export class PopcornService {
     );
   }
 
-  getShowsByKeyword(keyword: any): Observable<MoviesInt[]> {
+  getByKeyword(type: string, keyword: any): Observable<MoviesInt[]> {
     const url = `${
       this.base_url
-    }/shows/1?sort=year&order=-1&genre=all&keywords=${keyword}`;
+    }/${type}/1?sort=year&order=-1&genre=all&keywords=${keyword}`;
+    return this.httpClient.get<MoviesInt[]>(url).pipe(
+      timeout(20000),
+      retry(2), // retry a failed request up to 3 times
+      catchError(this.handleError) // then handle the error
+    );
+  }
+
+  /*** GET MOVIES */
+  getMovieList(showPage: number): Observable<MoviesInt[]> {
+    const url = `${
+      this.base_url
+    }/movies/${showPage}?sort=year&order=-1&genre=all`;
     return this.httpClient.get<MoviesInt[]>(url).pipe(
       timeout(20000),
       retry(2), // retry a failed request up to 3 times

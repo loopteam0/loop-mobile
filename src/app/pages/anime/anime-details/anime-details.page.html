@@ -9,8 +9,8 @@
     </ion-buttons>
 
     <ion-buttons slot="end">
-      <ion-button [disabled]="isFavorite | async" (click)="store(details)">
-        <ion-icon color="danger" slot="icon-only" name="heart"></ion-icon>
+      <ion-button color="danger" [disabled]="isFavorite | async" (click)="store(details)">
+        <ion-icon class="animated bounceIn" slot="icon-only" name="heart"></ion-icon>
       </ion-button>
     </ion-buttons>
 
@@ -19,7 +19,7 @@
 </ion-header>
 
 
-<ion-content class="content" fullscreen="true">
+<ion-content class="content">
 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -28,7 +28,7 @@
 
   <div class="spinner" *ngIf="loading"></div>
 
-  <ion-card class="error-card animated bounceIn" *ngIf="error">
+  <ion-card [ngClass]="{'margin-extra': error}" class="error-card animated bounceIn" *ngIf="error">
     <ion-card-content>
       <div class="auto">
         <ion-icon class="slideInDown animated infinite" slot="start" name="arrow-down"></ion-icon>
@@ -43,8 +43,9 @@
   </ion-card>
 
   <!-- placeholder -->
-  <div class='placeholder animated fadeIn' *ngIf="loading || !details">
-    <div #gbImage id="gbImage" class="movie-header">
+  <div class='placeholder animated fadeIn' *ngIf="loading">
+    <div id="gbImage" class="movie-header">
+      <img src="" alt="">
     </div>
 
     <div class="movie-summary">
@@ -54,15 +55,10 @@
       </div>
 
       <div class="item-content">
-        <span class="title">&nbsp;</span>
-        <span class="genre ">&nbsp;</span>
-        <span class="country">&nbsp;</span>
-        <span class="country">&nbsp;</span>
-        <span class="line">
-          <span class="time">&nbsp;</span>
-          <span class="date">&nbsp;</span>
-        </span>
-
+        <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+        <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+        <ion-skeleton-text animated width="30%"></ion-skeleton-text>
+        <ion-skeleton-text animated width="30%"></ion-skeleton-text>
       </div>
 
     </div>
@@ -71,14 +67,14 @@
   <!-- real output -->
   <div class='animated fadeIn' *ngIf="details">
     <div #gbImage id="gbImage" class="movie-header">
-      <img [src]="setBackground(details.images.fanart)">
+      <img onerror="this.src='./assets/placeholder.lg.png'" [src]="undefined">
     </div>
 
-    <div class="movie-content animated slideInRight" padding>
+    <div class="movie-content animated bounceIn" padding>
       <div class="movie-summary">
         <div class="poster">
           <div class="content">
-            <img src="../../../../assets/default_poster.png">
+            <img onerror="this.src='./assets/placeholder.show.png'" src="../../../../assets/default_poster.png">
           </div>
         </div>
 

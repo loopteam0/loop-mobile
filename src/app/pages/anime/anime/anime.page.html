@@ -13,13 +13,17 @@
     </ion-buttons>
 
     <ion-searchbar #input animated='true' debounce='2000' class="search" *ngIf="enableSearch" (ionClear)='ionClear()'
-      (ionChange)='ionChange(input.value)' placeholder="Search TV Shows"></ion-searchbar>
+      (ionChange)='ionChange(input.value)' placeholder="Search Anime"></ion-searchbar>
 
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding (ionScroll)='ionScroll($event)' (ionScrollEnd)="ionScrollEnd($event)" [scrollEvents]="true"
   class="page-content">
+
+  <ion-refresher slot="fixed" (ionRefresh)="Anime=[];page=1;ShowAnime()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <div class="spinner" *ngIf="loading && Anime.length> 0"></div>
 
@@ -30,7 +34,8 @@
           <div *ngFor="let show of Anime |truthify |unique" class="movie-detail" tappable>
             <div class="poster">
               <div id="img-content" class="content">
-                <img (click)="onNavigate(show.imdb_id)" src="../../../../assets/default_poster.png">
+                <img onerror="this.src='./assets/placeholder.show.png'" (click)="onNavigate(show.imdb_id)"
+                  src="../../../../assets/default_poster.png">
               </div>
             </div>
             <div class="item-content">
@@ -51,7 +56,7 @@
     </div>
 
     <!-- show error dialog if an error occure -->
-    <ion-card class="animated bounceIn" class="error-card" *ngIf="error">
+    <ion-card [ngClass]="{'margin-extra': error}" class="animated bounceIn" class="error-card" *ngIf="error">
       <ion-card-content>
         <h1>🤕</h1>
         <h3>Uh Oh</h3>
@@ -76,14 +81,10 @@
             </div>
           </div>
           <div class="item-content">
-            <span class="title">&nbsp;</span>
-            <span class="country">&nbsp;</span>
-            <span class="genre ">&nbsp;</span>
-            <span class="genre ">&nbsp;</span>
-            <span class="line">
-              <span class="date">&nbsp;</span>
-              <span class="time">&nbsp;</span>
-            </span>
+            <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+            <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+            <ion-skeleton-text animated width="30%"></ion-skeleton-text>
+            <ion-skeleton-text animated width="30%"></ion-skeleton-text>
           </div>
         </div>
       </div>

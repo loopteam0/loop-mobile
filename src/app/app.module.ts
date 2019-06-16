@@ -14,6 +14,8 @@ import { ShowsDownloadModalPageModule } from './pages/shows/shows-download-modal
 import { MovieDownloadModalPageModule } from './pages/movies/movie-download-modal/movie-download-modal.module';
 import { AnimeDownloadModalPageModule } from './pages/anime/anime-download-modal/anime-download-modal.module';
 import { IonicStorageModule } from '@ionic/storage';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -33,6 +35,7 @@ import { IonicStorageModule } from '@ionic/storage';
   providers: [
     StatusBar,
     SplashScreen,
+    InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

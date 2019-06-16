@@ -4,6 +4,7 @@ import {
   AlertController,
   ToastController
 } from '@ionic/angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -15,22 +16,24 @@ export class UiServiceService {
     public modalController: ModalController,
     private alertController: AlertController,
     public toastController: ToastController,
+    private inAppBrowser: InAppBrowser
   ) {}
 
   // modal controller
   async modal(data, component, cssClass?) {
     const modal = await this.modalController.create({
       cssClass: [cssClass],
-      component: component,
-      componentProps: { data: data }
+      component,
+      componentProps: { data }
     });
     return await modal.present();
   }
 
-  async presentAlert(type: string, message: any) {
+  async presentAlert(header: string, message: any, subHeader?) {
     const alert = await this.alertController.create({
-      header: type,
-      message: message,
+      header,
+      subHeader,
+      message,
       buttons: ['OK']
     });
 
@@ -39,17 +42,15 @@ export class UiServiceService {
 
   async presentToast(message: string, duration = 2000) {
     const toast = await this.toastController.create({
-      message: message,
-      duration: duration
+      message,
+      duration
     });
     toast.present();
   }
 
-  openFile(path: string) {
-    // this.fileOpener
-    //   .open(path, 'application/x-bittorrent')
-    //   .then(res => this.presentToast(res))
-    //   .catch(err => this.presentToast(err));
+  openLink(link: string) {
+    const browser = this.inAppBrowser.create(link, '_system');
+    browser.executeScript({ code: '(function() {  })()' });
   }
 
   checkAppAvailability(fileType: string, optionalType?: string) {

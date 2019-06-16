@@ -4,16 +4,21 @@ import { ActivatedRoute } from '@angular/router';
 import { ParamMap } from '@angular/router';
 import { UiServiceService } from '../../../services/ui-service.service';
 import { MovieDownloadModalPage } from '../movie-download-modal/movie-download-modal.page';
-import { IonRouterOutlet, IonSlides, IonSlide } from '@ionic/angular';
+import {
+  IonRouterOutlet,
+  IonSlides,
+  IonSlide,
+  AlertController
+} from '@ionic/angular';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { PopcornService } from 'src/app/services/popcorn.service';
 
 @Component({
   selector: 'app-movies-details',
   templateUrl: './movies-details.page.html',
-  styleUrls: ['./movies-details.page.scss'],
+  styleUrls: ['./movies-details.page.scss']
 })
 export class MoviesDetailsPage implements OnInit, OnDestroy {
   movie: any;
@@ -28,7 +33,7 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
 
   sliderConfig = {
     slidesPerView: 2,
-    spaceBetween: 10,
+    spaceBetween: 10
   };
 
   constructor(
@@ -37,28 +42,29 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
     private UI: UiServiceService,
     private router: IonRouterOutlet,
     private sanitizer: DomSanitizer,
-    private popcorn: PopcornService
+    private popcorn: PopcornService,
+    public alertController: AlertController
   ) {}
 
   ngOnInit() {
     // this the id of the movie form the route
     this.parms = this.route.paramMap.subscribe((params: ParamMap) => {
       const imdb_id = params.get('imdb_id');
-      this.img_id = params.get('id');
       this.Id = imdb_id;
     });
 
-    this.showDetails(this.Id);
-    this.showImages();
+    this.showDetails(this.Id.substr(2));
+    // this.showImages();
   }
 
   showDetails(id) {
     this.loading = true;
     this.error = false;
 
-    this.subscription = this.YTS.getMovieDetails(id).subscribe(
+    this.subscription = this.popcorn.getMovieDetails(id).subscribe(
       res => {
-        this.movie = res['movie'];
+        this.movie = res;
+        this.fanart = res;
         this.loading = false;
         this.error = false;
       },
@@ -88,13 +94,33 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
   }
 
   doRefresh(e) {
-    this.showDetails(this.Id);
     e.target.complete();
+    this.showDetails(this.Id);
   }
 
-  download(url) {
-    console.log(url);
-    window.open(url, '_system', 'location=yes');
+  async download(torrent) {
+    const alert = await this.alertController.create({
+      header: 'File Info',
+      message: `<p><strong>File size</strong>: ${torrent.filesize}</p>
+                <p><strong>Seeds</strong>: ${torrent.seed}</p>
+                <p><strong>Peers</strong>: ${torrent.peer}</p>
+                <p><strong>Provider</strong>: ${torrent.provider}</p>`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {}
+        },
+        {
+          text: 'Download',
+          handler: _ => {
+            this.UI.openLink(torrent.url);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   back() {
@@ -104,6 +130,5 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.parms.unsubscribe();
-    this.Image_subscription.unsubscribe();
   }
 }

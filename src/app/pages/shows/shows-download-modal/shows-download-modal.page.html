@@ -3,9 +3,9 @@
     <!-- <ion-title>Episodes</ion-title> -->
 
     <ion-item>
-      <ion-label>Source</ion-label>
-      <ion-select #downloadOpt value='Default' interface="action-sheet" placeholder="Select Pizza">
-        <ion-select-option *ngFor="let item of downloadOpts" [value]="item.name">{{item.name}}
+      <ion-label>Episodes Source</ion-label>
+      <ion-select #downloadOpt value='popcorn' interface="action-sheet" placeholder="Select Pizza">
+        <ion-select-option *ngFor="let item of downloadOpts" [value]="item.value">{{item.name}}
         </ion-select-option>
       </ion-select>
     </ion-item>
@@ -19,14 +19,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="downloadOpt.value === 'Default'">
-
+<ion-content *ngIf="downloadOpt.value === 'popcorn'">
+  <ion-text class="ion-text-center" color="secondar i-tey">
+    <p class='info'>Swipe left for download links</p>
+  </ion-text>
   <ion-list>
-    <ion-item-sliding *ngFor="let item of data.episodes | orderBy:['-season','-episode']">
-      <ion-card class="animated fadeIn">
+    <ion-item-sliding class="animated bounceIn" *ngFor="let item of data.episodes | orderBy:['-season','-episode']">
+      <ion-card>
         <ion-item>
 
-          <ion-card (click)="showEpisodeDetails('default', item)" class="episode-card">
+          <ion-card (click)="showEpisodeDetails('popcorn', item)" class="episode-card">
             <ion-card-content>
               <p>{{item.title}}</p>
               <ion-label>Season {{item.season}} Episode {{item.episode}} </ion-label>
@@ -36,16 +38,19 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option *ngIf="item.torrents['0']" (click)="item.torrents['0'].url" color="primary" expandable>
+          <ion-item-option *ngIf="item.torrents['0']" (click)="download(item.torrents['0'].url)" color="primary"
+            expandable>
             240p
           </ion-item-option>
-          <ion-item-option *ngIf="item.torrents['480p']" (click)="item.torrents['480p'].url" color="primary" expandable>
+          <ion-item-option *ngIf="item.torrents['480p']" (click)="download(item.torrents['480p'].url)" color="primary"
+            expandable>
             480p
           </ion-item-option>
-          <ion-item-option *ngIf="item.torrents['720p']" (click)="item.torrents['720p'].url" color="primary" expandable>
+          <ion-item-option *ngIf="item.torrents['720p']" (click)="download(item.torrents['720p'].url)" color="primary"
+            expandable>
             720p
           </ion-item-option>
-          <ion-item-option *ngIf="item.torrents['1080p']" (click)="item.torrents['1080p'].url" color="primary"
+          <ion-item-option *ngIf="item.torrents['1080p']" (click)="download(item.torrents['1080p'].url)" color="primary"
             expandable>
             1080p
           </ion-item-option>
@@ -58,13 +63,17 @@
 
 </ion-content>
 
-<ion-content *ngIf="downloadOpt.value === 'Eztv'">
+<ion-content *ngIf="downloadOpt.value === 'eztv'">
   <!-- <ion-content> -->
   <ion-refresher slot="fixed" (ionRefresh)="Episodes=[];page=1;getShowEpisodes($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-card class="error-card animated bounceIn" *ngIf="error">
+  <ion-text class="ion-text-center" color="secondar i-tey">
+    <p class='info'>Swipe left for download links</p>
+  </ion-text>
+
+  <ion-card [ngClass]="{'.margin-extra': error}" class="error-card animated bounceIn" *ngIf="error">
     <ion-card-content>
       <div class="auto">
         <ion-icon class="slideInDown animated infinite" slot="start" name="arrow-down"></ion-icon>
@@ -81,8 +90,8 @@
 
   <ion-list>
 
-    <ion-item-sliding *ngFor="let item of Episodes | truthify |unique">
-      <ion-card class="animated bounceIn" color="warning">
+    <ion-item-sliding class="animated bounceIn" *ngFor="let item of Episodes | truthify |unique">
+      <ion-card color="warning">
         <ion-item>
 
           <ion-card (click)="showEpisodeDetails('eztv',item)" class="episode-card">
@@ -95,7 +104,7 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option color="primary" expandable>
+          <ion-item-option (click)="download(item.magnet_url)" color="primary" expandable>
 
             <ion-icon slot="icon-only" name="download"></ion-icon>
 
@@ -110,7 +119,8 @@
   <div class="spinner" *ngIf="loading">
   </div>
 
-  <ion-card class="error-card animated bounceIn" *ngIf="error && Episodes.length != 0">
+  <ion-card [ngClass]="{'margin-extra': error}" class="error-card animated bounceIn"
+    *ngIf="error && Episodes.length != 0">
     <ion-card-content>
       <h1>😫</h1>
       <h3>Uh Oh</h3>

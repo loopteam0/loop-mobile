@@ -52,9 +52,8 @@ export class ShowsListPage implements OnInit {
         this.Shows = [...this.Shows, ...res];
         this.loading = false;
         this.error = false;
-        e ? (this.placeholer = false) : null;
-        // e ? e.target.complete : null;
         if (e) {
+          this.placeholer = false;
           e.target.complete();
         }
       },
@@ -73,9 +72,14 @@ export class ShowsListPage implements OnInit {
     this.loading = true;
     this.error = false;
     this.contentArea.scrollToTop(1500);
-    this.popcorn.getShowsByKeyword(keyword).subscribe(
+    this.popcorn.getByKeyword('shows', keyword).subscribe(
       res => {
         this.Shows = [...res, ...this.Shows];
+        if (res.length === 0) {
+          this.UI.presentToast('Nothing found ');
+        } else {
+          this.UI.presentToast(`${res.length} item(s) found`);
+        }
         this.loading = false;
         this.error = false;
       },

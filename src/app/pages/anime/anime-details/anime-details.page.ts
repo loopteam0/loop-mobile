@@ -1,10 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { timer, Subscription } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { PopcornService } from 'src/app/services/popcorn.service';
 import { UiServiceService } from 'src/app/services/ui-service.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ShowsDownloadModalPage } from '../../shows/shows-download-modal/shows-download-modal.page';
 import { SearchService } from 'src/app/services/search.service';
 import { AnimeDownloadModalPage } from '../anime-download-modal/anime-download-modal.page';
 import { FavoriteService } from 'src/app/services/favorite.service';
@@ -62,8 +60,15 @@ export class AnimeDetailsPage implements OnInit, OnDestroy {
     );
   }
 
-  store(val: object) {
-    this.favorites.store(val);
+  store(val: any) {
+    this.favorites
+      .store(val)
+      .then(_ => {
+        this.UI.presentToast(`${val.title} has been added to your favorites`);
+      })
+      .catch(_ => {
+        this.UI.presentToast('Failed to add to favorites');
+      });
   }
 
   setBackground(url: string) {
@@ -75,14 +80,13 @@ export class AnimeDetailsPage implements OnInit, OnDestroy {
   }
 
   doRefresh(e) {
+    e.target.complete();
     this.showDetails(this.Id);
-    timer(2000).subscribe(e.target.complete());
   }
 
   ngOnDestroy(): void {
     this.favorites.Favorite.next(false);
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
+
     this.subscription.unsubscribe();
   }
 }

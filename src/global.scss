@@ -89,9 +89,11 @@ ion-infinite-scroll {
   overflow: hidden;
   text-align: center;
   box-shadow: none;
+  margin: 0 0 15px 0;
+  padding: 0;
 
   ion-card-content {
-    padding: 2rem;
+    padding: 0;
   }
 
   .lead,
@@ -139,6 +141,14 @@ ion-infinite-scroll {
     font-size: 18px;
     margin-bottom: 10px;
   }
+
+  &.margin-extra {
+    margin: 30px auto;
+
+    ion-card-content {
+      padding: 20px 0;
+    }
+  }
 }
 
 ion-button-title {
@@ -157,6 +167,14 @@ ion-button-title {
 
 .search {
   transition: all 0.5s linear;
+}
+
+ion-text {
+  p.info {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: .7rem;
+  }
 }
 
 //   animations

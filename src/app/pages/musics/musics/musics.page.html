@@ -4,7 +4,7 @@
 
     <ion-buttons slot="end">
       <ion-button color="danger" class="search" (click)="clearAllFavs()">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
+        <ion-icon class="animated bounceIn" slot="icon-only" name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -16,7 +16,7 @@
   </ion-refresher>
 
   <ion-text color="tertiary" class="ion-text-center">
-    <p>Pull to refresh list</p>
+    <p class='info'>Pull to refresh list</p>
   </ion-text>
   <div class='animated fadeIn'>
     <div>
@@ -24,9 +24,10 @@
         <div *ngFor="let show of favs | async |truthify " class="movie-detail" tappable>
           <div class="poster">
             <div id="img-content" class="content">
-              <img *ngIf="show.value.mal_id" (click)="onNavigate(show.value)"
-                src="../../../../assets/default_poster.png">
-              <img *ngIf="show.value.imdb_id" (click)="onNavigate(show.value)" src="{{show.value.images.banner}}">
+              <img *ngIf="show.value.mal_id" onerror="this.src='./assets/placeholder.show.png'"
+                (click)="onNavigate(show.value)" src="../../../../assets/default_poster.png">
+              <img onerror="this.src='./assets/placeholder.show.png'" *ngIf="show.value.imdb_id"
+                (click)="onNavigate(show.value)" src="{{show.value.images.banner}}">
             </div>
           </div>
           <div class="item-content">

@@ -9,14 +9,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
   <div class="spinner" *ngIf="loading"></div>
 
-  <ion-card class="error-card animated bounceIn" *ngIf="error">
+  <ion-card [ngClass]="{'margin-extra': error}" class="error-card animated bounceIn" *ngIf="error">
     <ion-card-content>
       <div class="auto">
         <ion-icon class="slideInDown animated infinite" slot="start" name="arrow-down"></ion-icon>
@@ -30,36 +30,58 @@
     </ion-card-content>
   </ion-card>
 
+  <!-- placeholder -->
+  <div class='placeholder' *ngIf="loading">
+    <div id="gbImage" class="movie-header">
+    </div>
+
+    <div class="movie-summary">
+      <div class="poster">
+        <div class="content">
+          <img src="" alt="">
+        </div>
+      </div>
+
+      <div class="item-content">
+        <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+        <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+        <ion-skeleton-text animated width="30%"></ion-skeleton-text>
+        <ion-skeleton-text animated width="30%"></ion-skeleton-text>
+      </div>
+
+    </div>
+  </div>
+
+
   <!-- movie banner -->
   <div *ngIf="movie">
     <div class="movie-header">
-      <img class='animated fadeIn' *ngIf="fanart" [src]="setBackground(fanart.images.fanart)" />
+      <img onerror="this.src='./assets/placeholder.lg.png'" class='animated fadeIn' [src]="fanart.images.fanart" />
     </div>
 
-    <div class="movie-content animated slideInLeft" padding>
+    <div class="movie-content animated bounceIn" padding>
       <div class="movie-summary">
         <div class="poster">
           <div class="content">
-            <img src="{{ movie.medium_cover_image }}" />
+            <img onerror="this.src='./assets/placeholder.movie.png'" [src]="movie.images.banner" />
           </div>
         </div>
 
         <div class="item-content">
           <span class="title">{{ movie.title }}</span>
           <span class="genre ">{{ movie.genres | join: ' | ' }}</span>
-          <span class="country">{{ movie.download_count }} downloads |
-            {{ movie.mpa_rating || '' }}</span>
+          <span class="country">{{ movie.rating.votes }} votes |
+            {{ movie.certification || 'PG' }}</span>
 
           <span class="line">
-            <span class="date">{{ movie.date_uploaded | date: 'mediumDate' }} |
-            </span>
-            <span class="time"> {{ movie.runtime || 0 | duration }}</span>
+            <span class="date">{{ movie.released*1000 | date: 'mediumDate' }} | </span>
+            <span class="time"> {{ movie.runtime || 0 }} mins </span>
           </span>
 
           <!-- services rating -->
           <div class="ratings">
             <div class="imdb">
-              <span>imdb <span class="nb">{{ movie.rating }}</span></span>
+              <span>imdb <span class="nb">{{ movie.rating.percentage/10 }}</span></span>
             </div>
           </div>
         </div>
@@ -68,20 +90,20 @@
       <div class="movie-more">
         <!-- <span><span class="key">Director: </span>{{movie.director}}</span> -->
         <span class="description"><span class="key">Storyline: </span>
-          {{ movie.description_intro }}</span>
+          {{ movie.synopsis }}</span>
       </div>
 
       <div class="movie-more-1">
         <span><span class="key">Cast: </span></span>
         <ion-slides [options]="sliderConfig">
-          <ion-slide *ngFor="let item of movie.cast">
+          <ion-slide *ngFor="let item of [1,2,3,4]">
             <div>
               <div class="img">
-                <img [src]="item.url_small_image" alt="" />
+                <!-- <img [src]="item.url_small_image" alt="" /> -->
               </div>
-              <p>{{ item.name }}</p>
+              <p>{{ item.name || 'N/A'}}</p>
               <p class="small">as</p>
-              <p class="characterName">{{ item.character_name }}</p>
+              <p class="characterName">{{ item.character_name || 'N/A' }}</p>
             </div>
           </ion-slide>
         </ion-slides>
@@ -94,8 +116,11 @@
       <ion-icon name="download"></ion-icon>
     </ion-fab-button>
     <ion-fab-list *ngIf="movie.torrents" side="start">
-      <ion-fab-button *ngFor="let item of movie.torrents" (click)="download(item.url)">{{ item.quality }}
+      <ion-fab-button *ngIf="movie.torrents.en['720p']" (click)="download(movie.torrents.en['720p'])">720p
+      </ion-fab-button>
+      <ion-fab-button *ngIf="movie.torrents.en['1080p']" (click)="download(movie.torrents.en['1080p'])">1080p
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
+
 </ion-content>

@@ -34,7 +34,8 @@
           <div *ngFor="let show of Shows | truthify | unique" class="movie-detail animated fadeIn" tappable>
             <div class="poster">
               <div id="img-content" class="content">
-                <img class="animated fadeIn" (click)="onNavigate(show.imdb_id)" src="{{ show.images.poster }}">
+                <img onerror="this.src='./assets/placeholder.show.png'" class="animated fadeIn"
+                  (click)="onNavigate(show.imdb_id)" src="{{ show.images.poster }}">
               </div>
             </div>
             <div class="item-content">
@@ -58,7 +59,7 @@
     </div>
 
     <!-- show error dialog if an error occure -->
-    <ion-card class="error-card animated bounceIn" *ngIf="error">
+    <ion-card [ngClass]="{'margin-extra': error}" class="error-card animated bounceIn" *ngIf="error">
       <ion-card-content>
         <h1>😯</h1>
         <h3>Uh Oh</h3>
@@ -81,14 +82,10 @@
             <div class="content"></div>
           </div>
           <div class="item-content">
-            <span class="title">&nbsp;</span>
-            <span class="country">&nbsp;</span>
-            <span class="genre ">&nbsp;</span>
-            <span class="genre ">&nbsp;</span>
-            <span class="line">
-              <span class="date">&nbsp;</span>
-              <span class="time">&nbsp;</span>
-            </span>
+            <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+            <ion-skeleton-text animated width="60%"></ion-skeleton-text>
+            <ion-skeleton-text animated width="40%"></ion-skeleton-text>
+            <ion-skeleton-text animated width="30%"></ion-skeleton-text>
           </div>
         </div>
       </div>

@@ -55,13 +55,22 @@ export class ShowsDetailsPage implements OnInit, OnDestroy {
       err => {
         this.loading = false;
         this.error = true;
-        this.UI.presentAlert('Error', `${err} and pull to retry`);
+        this.UI.presentAlert('Error', `${err}`);
       }
     );
   }
 
-  store(details: object) {
-    this.favorites.store(details);
+  store(details: any) {
+    this.favorites
+      .store(details)
+      .then(_ => {
+        this.UI.presentToast(
+          `${details.title} has been added to your favorites`
+        );
+      })
+      .catch(_ => {
+        this.UI.presentToast('Failed to add to favorites');
+      });
   }
 
   setBackground(url: string) {
@@ -73,13 +82,13 @@ export class ShowsDetailsPage implements OnInit, OnDestroy {
   }
 
   doRefresh(e) {
+    e.target.complete();
     this.showDetails(this.Id);
-    timer(2000).subscribe(e.target.complete());
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
+    // Called once, before the instance is destroyed.
+    // Add 'implements OnDestroy' to the class.
     this.favorites.Favorite.next(false);
     this.subscription.unsubscribe();
   }

@@ -1,2 +1,8 @@
 @import '../../../../shared/scss/media.details';
 @import '../../../../shared/scss/placeholder';
+
+.movie-header {
+    img {
+        opacity: 0.7;
+    }
+}

@@ -5,6 +5,7 @@ import { Subscription, timer } from 'rxjs';
 import { UiServiceService } from 'src/app/services/ui-service.service';
 import { tap } from 'rxjs/operators';
 import { IonContent } from '@ionic/angular';
+import { PopcornService } from 'src/app/services/popcorn.service';
 
 @Component({
   selector: 'app-movies-list',
@@ -27,7 +28,7 @@ export class MoviesListPage implements OnInit, OnDestroy {
   fab: boolean;
 
   constructor(
-    private YTS: YtsService,
+    private YTS: PopcornService,
     private route: Router,
     private UI: UiServiceService
   ) {}
@@ -58,19 +59,16 @@ export class MoviesListPage implements OnInit, OnDestroy {
     this.loading = true;
     this.loading_i = true;
     this.error = false;
-    e ? (this.placeholder = false) : null;
-    this.subscription = this.YTS.getMoviesList(
-      this.page,
-      this.pageSize
-    ).subscribe(
+    e ? (this.placeholder = true) : null;
+    this.subscription = this.YTS.getMovieList(this.page).subscribe(
       res => {
         this.page++;
-        this.movies = [...this.movies, ...res['movies']];
+        this.movies = [...this.movies, ...res];
         this.loading = false;
         this.loading_i = false;
-        e ? (this.placeholder = false) : null;
         this.error = false;
         if (e) {
+          this.placeholder = false;
           e.target.complete();
         }
       },
@@ -90,10 +88,15 @@ export class MoviesListPage implements OnInit, OnDestroy {
     this.loading = true;
     this.error = false;
     this.contentArea.scrollToTop(1500);
-    this.subscription = this.YTS.getMoviesByKeyword(keyword).subscribe(
+    this.subscription = this.YTS.getByKeyword('movies', keyword).subscribe(
       res => {
         this.loading = false;
-        this.movies = [...res['movies'], ...this.movies];
+        this.movies = [...res, ...this.movies];
+        if (res.length === 0) {
+          this.UI.presentToast('Nothing found ');
+        } else {
+          this.UI.presentToast(`${res.length} item(s) found`);
+        }
         this.error = false;
       },
       err => {
@@ -107,6 +110,7 @@ export class MoviesListPage implements OnInit, OnDestroy {
   onNavigate(id: any, imdb_id: any) {
     this.route.navigate([`/tabs/movies-list/${id}/${imdb_id}`]);
   }
+
   ionScroll($event) {
     this.scrollPosition = $event.detail.currentY;
   }

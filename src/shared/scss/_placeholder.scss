@@ -12,7 +12,9 @@ $bg-color-loading: darken($bg-color, 3);
 
     .poster {
         .content {
-            background-color: darken($bg-color, 8);
+            height: 100%;
+            width: 100%;
+            background-color: $bg-color-loading;
         }
     }
 

@@ -21,7 +21,11 @@ export class AnimeDownloadModalPage implements OnInit {
     this.modalController.dismiss();
   }
 
+  download(link) {
+    this.UI.openLink(link);
+  }
+
   showEpisodeDetails(e) {
-    this.UI.presentAlert(e.title, e.overview);
+    this.UI.presentAlert(e.title, e.overview, 'Overview');
   }
 }

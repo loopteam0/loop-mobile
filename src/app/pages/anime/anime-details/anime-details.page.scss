@@ -1,6 +1,7 @@
 @import '../../../../shared/scss/_media.details';
 
 .movie-header {
-    background-color: #c5c4c4;
-
+    img {
+        opacity: 0.7;
+    }
 }

@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { OrderByPipe } from 'ngx-pipes';
 import { UiServiceService } from 'src/app/services/ui-service.service';
 import { PopcornService } from 'src/app/services/popcorn.service';
 import { Subscription } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-shows-download-modal',
   templateUrl: './shows-download-modal.page.html',
   styleUrls: ['./shows-download-modal.page.scss'],
-  providers: [OrderByPipe]
+  providers: [DatePipe]
 })
 export class ShowsDownloadModalPage implements OnInit, OnDestroy {
   @Input() data: any;
@@ -22,10 +23,12 @@ export class ShowsDownloadModalPage implements OnInit, OnDestroy {
 
   downloadOpts = [
     {
-      name: 'Default'
+      name: 'Popcorn TV',
+      value: 'popcorn'
     },
     {
-      name: 'Eztv'
+      name: 'Eztv',
+      value: 'eztv'
     }
   ];
 
@@ -34,7 +37,9 @@ export class ShowsDownloadModalPage implements OnInit, OnDestroy {
   constructor(
     public modalController: ModalController,
     private UI: UiServiceService,
-    private popcorn: PopcornService
+    private popcorn: PopcornService,
+    private date: DatePipe,
+    public alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -52,29 +57,56 @@ export class ShowsDownloadModalPage implements OnInit, OnDestroy {
         res => {
           this.page++;
           this.Episodes = [...this.Episodes, ...res['torrents']];
-          console.log(this.Episodes, this.Episodes.length);
           this.loading = false;
           this.error = false;
+          if (e) {
+            e.target.complete();
+          }
         },
         error => {
           this.loading = false;
           this.error = true;
           this.UI.presentAlert('Error', error);
+          if (e) {
+            e.target.complete();
+          }
         }
       );
-    if (e) {
-      e.target.complete();
-    }
   }
 
-  showEpisodeDetails(type, e) {
-    if (type === 'default') {
-      this.UI.presentAlert(e.title, e.overview);
+  async showEpisodeDetails(type, e) {
+    if (type === 'popcorn') {
+      this.UI.presentAlert(`${e.title}`, e.overview, 'Overview');
     } else if (type === 'eztv') {
-      this.UI.presentAlert(
-        `Season ${e.season} Episode ${e.episode}`,
-        `Seeds: ${e.seeds} \n Peers: ${e.peers}`
-      );
+      const alert = await this.alertController.create({
+        header: `Season ${e.season} Episode ${e.episode}`,
+        subHeader: 'File Info',
+        message: `<p><strong>Title</strong>: ${e.title}</p>
+                  <p><strong>File Size</strong>: ${Math.round(
+                    e.size_bytes * 8e-6
+                  )} MB</p>
+                  <p><strong>Seeds</strong>: ${e.seeds}</p>
+                  <p><strong>Peers</strong>: ${e.peers}</p>
+                  <p><strong>Date</strong>: ${this.date.transform(
+                    e.date_released_unix * 1000,
+                    'mediumDate'
+                  )}</p>`,
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {}
+          },
+          {
+            text: 'Download',
+            handler: _ => {
+              this.UI.openLink(e.magnet_url);
+            }
+          }
+        ]
+      });
+
+      await alert.present();
     }
   }
 
@@ -83,13 +115,10 @@ export class ShowsDownloadModalPage implements OnInit, OnDestroy {
   }
 
   download(url) {
-    this.UI.checkAppAvailability('bittorrent', 'Bittorrent');
-    this.UI.openFile(url);
+    this.UI.openLink(url);
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     this.subscription.unsubscribe();
   }
 }

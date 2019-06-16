@@ -1,4 +1,4 @@
-<ion-header autoHide='true'>
+<ion-header>
   <ion-toolbar>
     <ion-title *ngIf="!enableSearch">Movies</ion-title>
 
@@ -15,9 +15,7 @@
     <ion-searchbar #input animated (ionBlur)='togleSearch()' debounce='1000' class="search" *ngIf="enableSearch"
       (ionClear)='ionClear()' (ionChange)='ionChange(input.value)' placeholder="Search Movies">
     </ion-searchbar>
-
   </ion-toolbar>
-
 </ion-header>
 
 <ion-content (ionScroll)='ionScroll($event)' (ionScrollEnd)="ionScrollEnd($event)" [scrollEvents]="true" padding
@@ -33,38 +31,41 @@
   </div>
 
   <div>
-    <div class='animated fadeIn' *ngIf="movies.length > 0">
+    <div *ngIf="movies.length > 0">
       <div>
         <div class="movies current">
-          <div class='animated fadeIn' *ngFor="let movie of movies | truthify |unique" class="movie-detail" tappable>
+          <div *ngFor="let item of movies | truthify | unique" class="movie-detail animated fadeIn" tappable>
             <div class="poster">
-              <div class="content">
-                <img class='animated fadeIn' (click)="onNavigate(movie.id,movie.imdb_code)"
-                  src="{{movie.large_cover_image}}">
+              <div id="img-content" class="content">
+                <img onerror="this.src='./assets/placeholder.movie.png'" class="animated fadeIn"
+                  (click)="onNavigate(item._id ,item.imdb_id)" src="{{item.images.poster }}">
               </div>
             </div>
             <div class="item-content">
-              <span (click)="onNavigate(movie.id,movie.imdb_code)" class="title">{{movie.title}}</span>
-              <span class="genre">{{movie.genres | join:" | "}}</span>
-
+              <span (click)="onNavigate(item._id,item.imdb_id)" class="title">
+                {{item.title}}</span>
+              <span class="genre">{{item.genres | join:" | "}}</span>
               <span class="line">
-                <span class="date">{{movie.year}} | </span>
-                <span class="time">{{movie.runtime | duration}}</span>
+                <span class="date">{{item.year}} | </span>
+                <span class="date">{{item.certification || 'PG'}} | </span>
+                <span class="time">{{item.runtime}} mins</span>
               </span>
-              <span class="country">{{movie.language}}</span>
+
+              <span class="country">{{item.language}}</span>
               <!-- services rating -->
               <div class="ratings">
                 <div class="imdb">
-                  <span>imdb <span class="nb">{{movie.rating}}</span></span>
+                  <span>imdb
+                    <span class="nb">{{
+                      item.rating.percentage / 10
+                    }}</span></span>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
       </div>
     </div>
-
 
   </div>
 
@@ -73,7 +74,7 @@
   <div class="spinner" *ngIf="loading"></div>
 
 
-  <ion-card class="animated bounceIn" class="error-card" *ngIf="error">
+  <ion-card [ngClass]="{'margin-extra': error}" class="animated bounceIn" class="error-card" *ngIf="error">
     <ion-card-content>
       <h1>🤯</h1>
       <h3 class='eina'>Uh Oh</h3>

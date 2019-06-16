@@ -5,6 +5,18 @@ ion-button {
     float: right;
 }
 
+ion-header {
+    ion-toolbar {
+        ion-item {
+            width: 280px;
+
+            ion-select {
+                padding-left: 0;
+            }
+        }
+    }
+}
+
 .episode-card {
     width: 100%;
     margin: auto;
@@ -51,4 +63,8 @@ ion-content {
     ion-button {
         float: none;
     }
+}
+
+.info {
+    margin: 10px 0 0 0;
 }

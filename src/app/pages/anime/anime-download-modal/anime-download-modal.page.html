@@ -15,6 +15,9 @@
 
 <ion-content>
 
+  <ion-text class="ion-text-center" color="secondar i-tey">
+    <p class='info'>Swipe left for download links</p>
+  </ion-text>
   <ion-list>
     <ion-item-sliding *ngFor="let item of data.episodes">
       <ion-card class="animated bounceIn">
@@ -30,16 +33,19 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option *ngIf="item.torrents['0']" (click)="item.torrents['0'].url" color="primary" expandable>
+          <ion-item-option *ngIf="item.torrents['0']" (click)="download(item.torrents['0'].url)" color="primary"
+            expandable>
             240p
           </ion-item-option>
-          <ion-item-option *ngIf="item.torrents['480p']" (click)="item.torrents['480p'].url" color="primary" expandable>
+          <ion-item-option *ngIf="item.torrents['480p']" (click)="download(item.torrents['480p'].url)" color="primary"
+            expandable>
             480p
           </ion-item-option>
-          <ion-item-option *ngIf="item.torrents['720p']" (click)="item.torrents['720p'].url" color="primary" expandable>
+          <ion-item-option *ngIf="item.torrents['720p']" (click)="download(item.torrents['720p'].url)" color="primary"
+            expandable>
             720p
           </ion-item-option>
-          <ion-item-option *ngIf="item.torrents['1080p']" (click)="item.torrents['1080p'].url" color="primary"
+          <ion-item-option *ngIf="item.torrents['1080p']" (click)="download(item.torrents['1080p'].url)" color="primary"
             expandable>
             1080p
           </ion-item-option>

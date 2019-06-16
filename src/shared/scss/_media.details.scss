@@ -102,7 +102,7 @@ ion-content.content {
     }
 
     .title {
-        margin-bottom: .5em;
+        margin-bottom: .2em;
         font-size: 1.1em;
         font-weight: bold;
         color: $color-title;
@@ -247,7 +247,7 @@ ion-content.content {
             p {
                 margin-top: 0.2rem;
                 margin-bottom: 0.2rem;
-
+                font-size: .8em;
                 font-weight: normal;
 
                 &.small {
