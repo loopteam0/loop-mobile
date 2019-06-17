@@ -76,15 +76,6 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
     );
   }
 
-  showImages() {
-    this.Image_subscription = this.popcorn
-      .getMovieDetails(this.img_id.substr(2))
-      .subscribe(res => {
-        this.fanart = res;
-        console.log(res);
-      });
-  }
-
   setBackground(url: string) {
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
@@ -93,8 +84,7 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
     this.UI.modal(data, MovieDownloadModalPage);
   }
 
-  doRefresh(e) {
-    e.target.complete();
+  doRefresh() {
     this.showDetails(this.Id);
   }
 

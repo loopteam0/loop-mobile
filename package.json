@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ionic cordova build android --buildConfig=build.json",
+    "build": "ionic cordova build android --release --buildConfig=build.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

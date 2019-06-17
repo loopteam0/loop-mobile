@@ -21,10 +21,6 @@
 <ion-content padding (ionScroll)='ionScroll($event)' (ionScrollEnd)="ionScrollEnd($event)" [scrollEvents]="true"
   class="page-content">
 
-  <ion-refresher slot="fixed" (ionRefresh)="Anime=[];page=1;ShowAnime()">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-
   <div class="spinner" *ngIf="loading && Anime.length> 0"></div>
 
   <div>
@@ -63,7 +59,7 @@
         <h5>Sorry, something went wrong.</h5>
 
         <div class="auto">
-          <ion-button color="danger" class="retry-button" (click)="ShowAnime()">
+          <ion-button (click)="ShowAnime()" color="danger" fill="outline" shape="round">
             RETRY
           </ion-button>
         </div>

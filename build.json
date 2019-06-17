@@ -1,17 +1,17 @@
 {
     "android": {
         "debug": {
-            "keystore": "../android.keystore",
+            "keystore": "./android.keystore",
             "storePassword": "android",
-            "alias": "mykey1",
-            "password": "password",
+            "alias": "loop_mobile_key",
+            "password": "android",
             "keystoreType": ""
         },
         "release": {
             "keystore": "../android.keystore",
-            "storePassword": "",
-            "alias": "mykey2",
-            "password": "password",
+            "storePassword": "android",
+            "alias": "loop_mobile_key",
+            "password": "android",
             "keystoreType": ""
         }
     }

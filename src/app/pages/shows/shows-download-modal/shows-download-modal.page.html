@@ -65,9 +65,6 @@
 
 <ion-content *ngIf="downloadOpt.value === 'eztv'">
   <!-- <ion-content> -->
-  <ion-refresher slot="fixed" (ionRefresh)="Episodes=[];page=1;getShowEpisodes($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
   <ion-text class="ion-text-center" color="secondar i-tey">
     <p class='info'>Swipe left for download links</p>
@@ -82,7 +79,9 @@
       <h3>Uh Oh</h3>
       <h5>Sorry, something went wrong.</h5>
       <div class="auto">
-        <span>Slide down to Refresh </span>
+        <ion-button (click)="getShowEpisodes()" color="danger" fill="outline" shape="round">
+          RETRY
+        </ion-button>
       </div>
     </ion-card-content>
   </ion-card>

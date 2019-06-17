@@ -21,11 +21,6 @@
 <ion-content (ionScroll)='ionScroll($event)' (ionScrollEnd)="ionScrollEnd($event)" [scrollEvents]="true" padding
   class="page-content">
 
-  <ion-refresher slot="fixed" (ionRefresh)="movies=[];page=1;showMovies($event)">
-    <ion-refresher-content>
-    </ion-refresher-content>
-  </ion-refresher>
-
   <div *ngIf="movies.length > 0">
     <div class="spinner" *ngIf="loading"></div>
   </div>
@@ -76,11 +71,11 @@
 
   <ion-card [ngClass]="{'margin-extra': error}" class="animated bounceIn" class="error-card" *ngIf="error">
     <ion-card-content>
-      <h1>🤯</h1>
+      <h1>😵</h1>
       <h3 class='eina'>Uh Oh</h3>
       <h5>Sorry, something went wrong.</h5>
       <div class="auto">
-        <ion-button color="danger" class="retry-button" (click)="showMovies()">
+        <ion-button (click)="showMovies()" color="danger" fill="outline" shape="round">
           RETRY
         </ion-button>
       </div>
@@ -94,7 +89,7 @@
   </ion-fab>
 
   <!-- placeholder -->
-  <div class='animated fadeIn' *ngIf="loading || placeholder ||loading_i">
+  <div class='animated fadeIn' *ngIf="loading ||placeholder ||loading_i">
     <div class="movies current">
       <div *ngFor="let i of [1,2,3,4]" class="movie-detail loading">
         <div class="poster">

@@ -19,13 +19,14 @@ export class MoviesListPage implements OnInit, OnDestroy {
   page = 1;
   pageSize = 50;
   onRetry: any;
-  subscription: Subscription;
   placeholder: boolean;
   enableSearch: boolean;
   loading_i: boolean;
   @ViewChild(IonContent) contentArea: IonContent;
   scrollPosition: number;
   fab: boolean;
+  subs: Subscription;
+  subs1: Subscription;
 
   constructor(
     private YTS: PopcornService,
@@ -60,7 +61,7 @@ export class MoviesListPage implements OnInit, OnDestroy {
     this.loading_i = true;
     this.error = false;
     e ? (this.placeholder = true) : null;
-    this.subscription = this.YTS.getMovieList(this.page).subscribe(
+    this.subs = this.YTS.getMovieList(this.page).subscribe(
       res => {
         this.page++;
         this.movies = [...this.movies, ...res];
@@ -88,7 +89,7 @@ export class MoviesListPage implements OnInit, OnDestroy {
     this.loading = true;
     this.error = false;
     this.contentArea.scrollToTop(1500);
-    this.subscription = this.YTS.getByKeyword('movies', keyword).subscribe(
+    this.subs1 = this.YTS.getByKeyword('movies', keyword).subscribe(
       res => {
         this.loading = false;
         this.movies = [...res, ...this.movies];
@@ -127,8 +128,9 @@ export class MoviesListPage implements OnInit, OnDestroy {
     this.contentArea.scrollToTop(2000);
   }
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    this.subscription.unsubscribe();
+    // Called once, before the instance is destroyed.
+    // Add 'implements OnDestroy' to the class.
+    this.subs.unsubscribe();
+    this.subs1.unsubscribe();
   }
 }

@@ -7,7 +7,7 @@
       <ion-back-button defaultHref='tabs/shows-list'></ion-back-button>
     </ion-buttons>
 
-    <ion-buttons slot="end">
+    <ion-buttons *ngIf="details" slot="end">
       <ion-button color="danger" [disabled]="isFavorite | async" (click)="store(details)">
         <ion-icon class="animated bounceIn" slot="icon-only" name="heart"></ion-icon>
       </ion-button>
@@ -19,23 +19,18 @@
 
 <ion-content class="content">
 
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-
-
   <div class="spinner" *ngIf="loading"></div>
 
   <ion-card [ngClass]="{'margin-extra': error}" class="error-card animated bounceIn" *ngIf="error">
     <ion-card-content>
-      <div class="auto">
-        <ion-icon class="slideInDown animated infinite" slot="start" name="arrow-down"></ion-icon>
-      </div>
+
       <h1 class='animated'>🤯</h1>
       <h3>Uh Oh</h3>
       <h5>Sorry, something went wrong.</h5>
       <div class="auto">
-        <span>Slide down to Retry </span>
+        <ion-button (click)="doRefresh()" color="danger" fill="outline" shape="round">
+          RETRY
+        </ion-button>
       </div>
     </ion-card-content>
   </ion-card>

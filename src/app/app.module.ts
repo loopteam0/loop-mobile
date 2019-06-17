@@ -15,6 +15,7 @@ import { MovieDownloadModalPageModule } from './pages/movies/movie-download-moda
 import { AnimeDownloadModalPageModule } from './pages/anime/anime-download-modal/anime-download-modal.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],

@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { SearchService } from 'src/app/services/search.service';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { UiServiceService } from 'src/app/services/ui-service.service';
+import { timer, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-anime',
   templateUrl: './anime.page.html',
   styleUrls: ['./anime.page.scss']
 })
-export class AnimePage implements OnInit {
+export class AnimePage implements OnInit, OnDestroy {
   loading: boolean;
   error: boolean;
   page = 1;
@@ -19,6 +20,8 @@ export class AnimePage implements OnInit {
   @ViewChild(IonContent) contentArea: IonContent;
   fab: boolean;
   scrollPosition: number;
+  subs: Subscription;
+  subs1: Subscription;
 
   constructor(
     private popcorn: SearchService,
@@ -44,7 +47,7 @@ export class AnimePage implements OnInit {
     this.loading = true;
     this.error = false;
     this.scrollTo();
-    this.popcorn.getAnimesByKeyword(val).subscribe(
+    this.subs = this.popcorn.getAnimesByKeyword(val).subscribe(
       res => {
         this.loading = false;
         this.error = false;
@@ -67,7 +70,7 @@ export class AnimePage implements OnInit {
     this.loading = true;
     this.error = false;
     e ? (this.placeholer = true) : null;
-    await this.popcorn.getAnimesList(this.page).subscribe(
+    this.subs1 = await this.popcorn.getAnimesList(this.page).subscribe(
       res => {
         this.page++;
         this.Anime = [...this.Anime, ...res];
@@ -81,7 +84,7 @@ export class AnimePage implements OnInit {
       err => {
         this.loading = false;
         this.error = true;
-        this.UI.presentAlert('EZTV Error', err);
+        this.UI.presentAlert('Error', err);
         if (e) {
           e.target.complete();
         }
@@ -116,5 +119,12 @@ export class AnimePage implements OnInit {
 
   togleSearch() {
     this.enableSearch = !this.enableSearch;
+  }
+
+  ngOnDestroy(): void {
+    // Called once, before the instance is destroyed.
+    // Add 'implements OnDestroy' to the class.
+    this.subs.unsubscribe();
+    this.subs1.unsubscribe();
   }
 }

@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopcornService } from '../../../services/popcorn.service';
 import { UiServiceService } from 'src/app/services/ui-service.service';
 import { IonContent } from '@ionic/angular';
+import { timer, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shows-list',
   templateUrl: './shows-list.page.html',
   styleUrls: ['./shows-list.page.scss']
 })
-export class ShowsListPage implements OnInit {
+export class ShowsListPage implements OnInit, OnDestroy {
   Shows: Array<any> = [];
   loading: boolean;
   error: boolean;
@@ -20,6 +21,8 @@ export class ShowsListPage implements OnInit {
 
   @ViewChild(IonContent) contentArea: IonContent;
   scrollPosition: number;
+  subs1: Subscription;
+  subs: Subscription;
   constructor(
     private popcorn: PopcornService,
     private route: Router,
@@ -34,7 +37,7 @@ export class ShowsListPage implements OnInit {
     if (val.trim().length === 0 || !val) {
       // do nothing
     } else if (val.length === 0) {
-      //do nothing
+      // do nothing
     } else {
       this.search(val);
     }
@@ -46,7 +49,7 @@ export class ShowsListPage implements OnInit {
     this.loading = true;
     this.error = false;
     e ? (this.placeholer = true) : null;
-    await this.popcorn.getShowsList(this.page).subscribe(
+    this.subs = await this.popcorn.getShowsList(this.page).subscribe(
       res => {
         this.page++;
         this.Shows = [...this.Shows, ...res];
@@ -72,7 +75,7 @@ export class ShowsListPage implements OnInit {
     this.loading = true;
     this.error = false;
     this.contentArea.scrollToTop(1500);
-    this.popcorn.getByKeyword('shows', keyword).subscribe(
+    this.subs1 = this.popcorn.getByKeyword('shows', keyword).subscribe(
       res => {
         this.Shows = [...res, ...this.Shows];
         if (res.length === 0) {
@@ -118,5 +121,12 @@ export class ShowsListPage implements OnInit {
 
   onNavigate(id: any) {
     this.route.navigate([`/tabs/shows-list/${id}`]);
+  }
+
+  ngOnDestroy(): void {
+    // Called once, before the instance is destroyed.
+    // Add 'implements OnDestroy' to the class.
+    this.subs.unsubscribe();
+    this.subs1.unsubscribe();
   }
 }

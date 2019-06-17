@@ -133,7 +133,8 @@ ion-infinite-scroll {
     @extend .eina;
     font-size: 48px;
     color: #73849a;
-
+    font-weight: bold;
+    word-spacing: -0.5rem;
   }
 
   h5 {

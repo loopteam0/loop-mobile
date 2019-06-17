@@ -79,8 +79,7 @@ export class AnimeDetailsPage implements OnInit, OnDestroy {
     this.UI.modal(data, AnimeDownloadModalPage);
   }
 
-  doRefresh(e) {
-    e.target.complete();
+  doRefresh() {
     this.showDetails(this.Id);
   }
 

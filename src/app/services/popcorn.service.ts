@@ -91,11 +91,12 @@ export class PopcornService {
     );
   }
 
+  // name , rating , released , trending , updated , year .
   /*** GET MOVIES */
-  getMovieList(showPage: number): Observable<MoviesInt[]> {
+  getMovieList(showPage: number, sort = 'trending'): Observable<MoviesInt[]> {
     const url = `${
       this.base_url
-    }/movies/${showPage}?sort=year&order=-1&genre=all`;
+    }/movies/${showPage}?sort=${sort}&order=-1&genre=all`;
     return this.httpClient.get<MoviesInt[]>(url).pipe(
       timeout(20000),
       retry(2), // retry a failed request up to 3 times

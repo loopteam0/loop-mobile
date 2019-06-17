@@ -81,8 +81,7 @@ export class ShowsDetailsPage implements OnInit, OnDestroy {
     this.UI.modal(data, ShowsDownloadModalPage);
   }
 
-  doRefresh(e) {
-    e.target.complete();
+  doRefresh() {
     this.showDetails(this.Id);
   }
 

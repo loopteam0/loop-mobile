@@ -19,9 +19,6 @@
 
 <ion-content padding (ionScroll)="ionScroll($event)" (ionScrollEnd)="ionScrollEnd($event)" [scrollEvents]="true"
   class="page-content">
-  <ion-refresher slot="fixed" (ionRefresh)="Shows = []; page = 1; showShows($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
   <div *ngIf="Shows.length > 0">
     <div class="spinner" *ngIf="loading"></div>
@@ -35,7 +32,7 @@
             <div class="poster">
               <div id="img-content" class="content">
                 <img onerror="this.src='./assets/placeholder.show.png'" class="animated fadeIn"
-                  (click)="onNavigate(show.imdb_id)" src="{{ show.images.poster }}">
+                  (click)="onNavigate(show.imdb_id)" src="{{show.images.poster}}">
               </div>
             </div>
             <div class="item-content">
@@ -65,7 +62,7 @@
         <h3>Uh Oh</h3>
         <h5>Sorry, something went wrong.</h5>
         <div class="auto">
-          <ion-button color="danger" class="retry-button" (click)="showShows()">
+          <ion-button (click)="showShows()" color="danger" fill="outline" shape="round">
             RETRY
           </ion-button>
         </div>
