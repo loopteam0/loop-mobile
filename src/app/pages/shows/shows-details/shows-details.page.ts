@@ -39,6 +39,10 @@ export class ShowsDetailsPage implements OnInit, OnDestroy {
       // get imdb_id without tt
       this.Id = imdb_id.substr(2);
     });
+
+    try {
+      this.isFavorite = this.favorites.Favorite;
+    } catch (error) {}
     this.showDetails(this.Id);
   }
 

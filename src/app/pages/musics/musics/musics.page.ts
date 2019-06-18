@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FavoriteService } from 'src/app/services/favorite.service';
-import { BehaviorSubject, Observable, timer } from 'rxjs';
+import { BehaviorSubject, timer } from 'rxjs';
 import { Router } from '@angular/router';
-import { UiServiceService } from 'src/app/services/ui-service.service';
 import { AlertController } from '@ionic/angular';
 
 @Component({

@@ -39,6 +39,10 @@ export class AnimeDetailsPage implements OnInit, OnDestroy {
       this.Id = id;
     });
 
+    try {
+      this.isFavorite = this.favorites.Favorite;
+    } catch (error) {}
+
     this.showDetails(this.Id);
   }
 

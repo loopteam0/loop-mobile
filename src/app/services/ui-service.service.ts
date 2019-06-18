@@ -51,6 +51,7 @@ export class UiServiceService {
   openLink(link: string) {
     const browser = this.inAppBrowser.create(link, '_system');
     browser.executeScript({ code: '(function() {  })()' });
+    browser.on('loaderror');
   }
 
   checkAppAvailability(fileType: string, optionalType?: string) {

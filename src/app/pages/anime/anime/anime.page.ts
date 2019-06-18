@@ -124,7 +124,5 @@ export class AnimePage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Called once, before the instance is destroyed.
     // Add 'implements OnDestroy' to the class.
-    this.subs.unsubscribe();
-    this.subs1.unsubscribe();
   }
 }

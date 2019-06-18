@@ -30,7 +30,7 @@
           <div *ngFor="let show of Anime |truthify |unique" class="movie-detail" tappable>
             <div class="poster">
               <div id="img-content" class="content">
-                <img onerror="this.src='./assets/placeholder.show.png'" (click)="onNavigate(show.imdb_id)"
+                <img onerror="this.src='./assets/placeholder.show.png'" (click)="onNavigate(show._id)"
                   src="../../../../assets/default_poster.png">
               </div>
             </div>

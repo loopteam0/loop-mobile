@@ -30,7 +30,10 @@ import { DatePipe } from '@angular/common';
     NgArrayPipesModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot({
+      name: '_loopDB',
+      driverOrder: ['sqlite', 'indexeddb', 'websql']
+    })
   ],
 
   providers: [
