@@ -30,15 +30,26 @@ export class FavoriteService implements OnInit {
     await this.get();
   }
 
+  setPreference(key: string, value: boolean) {
+    this.IonicStore.set(key, value);
+  }
+
+  getPreference(key) {
+    return this.IonicStore.get(key);
+  }
+
   // b612s-25d
   async get() {
     const Favs = [];
+    let toObject;
     await this.IonicStore.forEach((value, key, index) => {
-      const toObject = {
-        key,
-        index,
-        value
-      };
+      if (key !== 'torrent_available') {
+        toObject = {
+          key,
+          index,
+          value
+        };
+      }
       Favs.push(toObject);
     });
     return this.Favorites.next([...Favs]);

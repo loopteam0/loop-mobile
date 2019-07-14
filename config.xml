@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="inc.loop.loopmobile" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="inc.loop.loopmobile" version="0.2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Loop Movie Downloader</name>
     <description>Download Movies, TV Shows and Anime.</description>
     <author email="loopteam0@gmail.com" href="https://loopteam0.github.io/moblie">The Loop Team</author>

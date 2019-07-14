@@ -71,9 +71,8 @@ export class MusicsPage implements OnInit {
     await alert.present();
   }
 
-  getFavs(e) {
+  getFavs() {
     this.favorites.get();
-    timer(2000).subscribe(_ => e.target.complete());
   }
 
   onNavigate(fav: any) {

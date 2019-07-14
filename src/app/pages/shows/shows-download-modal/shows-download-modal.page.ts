@@ -27,7 +27,7 @@ export class ShowsDownloadModalPage implements OnInit, OnDestroy {
       value: 'popcorn'
     },
     {
-      name: 'Eztv',
+      name: 'EZTV',
       value: 'eztv'
     }
   ];
@@ -83,7 +83,7 @@ export class ShowsDownloadModalPage implements OnInit, OnDestroy {
         subHeader: 'File Info',
         message: `<p><strong>Title</strong>: ${e.title}</p>
                   <p><strong>File Size</strong>: ${Math.round(
-                    e.size_bytes * 8e-6
+                    e.size_bytes * 1e-6
                   )} MB</p>
                   <p><strong>Seeds</strong>: ${e.seeds}</p>
                   <p><strong>Peers</strong>: ${e.peers}</p>

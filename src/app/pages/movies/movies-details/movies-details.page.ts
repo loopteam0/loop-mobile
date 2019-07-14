@@ -85,7 +85,7 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
   }
 
   doRefresh() {
-    this.showDetails(this.Id);
+    this.showDetails(this.Id.substr(2));
   }
 
   async download(torrent) {
@@ -115,6 +115,10 @@ export class MoviesDetailsPage implements OnInit, OnDestroy {
 
   back() {
     this.router.canGoBack();
+  }
+
+  openYoutubeLink(e) {
+    this.UI.openLink(e);
   }
 
   ngOnDestroy() {

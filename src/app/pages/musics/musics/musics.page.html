@@ -3,25 +3,24 @@
     <ion-title *ngIf="!enableSearch">Favorites</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button color="danger" class="search" (click)="clearAllFavs()">
-        <ion-icon class="animated bounceIn" slot="icon-only" name="trash"></ion-icon>
+      <ion-button (click)="getFavs()">
+        <ion-icon class="animated bounceIn" slot="icon-only" name="refresh"></ion-icon>
       </ion-button>
+      <!-- <ion-button color="danger" class="search" (click)="clearAllFavs()">
+        <ion-icon class="animated bounceIn" slot="icon-only" name="trash"></ion-icon>
+      </ion-button> -->
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-refresher slot="fixed" (ionRefresh)="getFavs($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
-  <ion-text color="tertiary" class="ion-text-center">
-    <p class='info'>Pull to refresh list</p>
-  </ion-text>
-  <div class='animated fadeIn'>
+
+  <div>
     <div>
       <div class="movies current">
-        <div *ngFor="let show of favs | async |truthify " class="movie-detail" tappable>
+        <div class='animated fadeIn' *ngFor="let show of favs | async |truthify " class="movie-detail" tappable>
           <div class="poster">
             <div id="img-content" class="content">
               <img *ngIf="show.value.mal_id" onerror="this.src='./assets/placeholder.show.png'"

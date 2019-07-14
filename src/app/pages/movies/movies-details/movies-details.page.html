@@ -124,4 +124,10 @@
     </ion-fab-list>
   </ion-fab>
 
+  <ion-fab *ngIf="movie" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button (click)="openYoutubeLink(movie.trailer)" color='danger' class="animated fadeIn">
+      <ion-icon name="logo-youtube"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>
