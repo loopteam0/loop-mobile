@@ -30,7 +30,7 @@
     "cordova-plugin-inappbrowser": "3.0.0",
     "cordova-sqlite-storage": "3.2.0",
     "core-js": "^2.5.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ngx-pipes": "^2.5.1",
     "rxjs": "~6.5.1",
     "torrent-search-api": "^2.0.9",
